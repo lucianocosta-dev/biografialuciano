@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Luciano De Tarso Freitas Costa — Portfolio</title>
+  <meta name="description" content="Portfólio de Luciano — desenvolvedor web e criador de interfaces modernas" />
+
+  <!-- ====== ESTILOS (Inline para facilitar uso imediato) ====== -->
+  <style>
+    :root{
+      --bg-1: #000000;
+      --bg-2: #001f3f; /* deep blue */
+      --accent: #00ffcc; /* teal */
+      --accent-2: #00ff99; /* greenish */
+      --muted: #bfc7c7;
+      --glass: rgba(255,255,255,0.04);
+      --card: rgba(255,255,255,0.03);
+      --radius: 14px;
+      --ff: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+
+      /* light mode overrides (used when body.light-mode is present) */
+      --light-bg-1: #f6f8ff;
+      --light-bg-2: #dfefff;
+      --light-accent: #006b5f;
+      --light-accent-2: #004b7a;
+      --light-text: #07202a;
+      --light-card: rgba(0,0,0,0.04);
+      --light-muted: #4b5a5a;
+    }
+
+    /* Reset mínimo */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body,#app{height:100%}
+    body{
+      font-family:var(--ff);
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(0,255,204,0.035), transparent),
+                  linear-gradient(135deg,var(--bg-1),var(--bg-2));
+      color:#e6f7f2;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      line-height:1.5;
+      transition: background .35s ease, color .35s ease;
+    }
+
+    /* LIGHT MODE */
+    body.light-mode{
+      background: linear-gradient(135deg,var(--light-bg-1),var(--light-bg-2));
+      color:var(--light-text);
+    }
+
+    /* Container */
+    .wrap{max-width:1200px;margin:0 auto;padding:110px 28px 60px}
+
+    /* Header */
+    header {
+      position:fixed;left:0;right:0;top:0;z-index:9999;
+      display:flex;align-items:center;justify-content:space-between;padding:14px 36px;
+      background:linear-gradient(180deg,rgba(0,0,0,0.45),transparent);
+      backdrop-filter: blur(8px);
+      border-bottom:1px solid rgba(255,255,255,0.02);
+      transition: background .3s ease, border-color .3s ease;
+    }
+
+    body.light-mode header{
+      background: linear-gradient(180deg, rgba(255,255,255,0.85), transparent);
+      border-bottom:1px solid rgba(0,0,0,0.06);
+    }
+
+    .brand{display:flex;gap:14px;align-items:center}
+    .logo{
+      width:44px;height:44px;border-radius:10px;display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 6px 30px rgba(0,255,204,0.06);
+      font-weight:700;color:#001; font-size:14px
+    }
+    body.light-mode .logo{background:linear-gradient(135deg,var(--light-accent),var(--light-accent-2));color:#fff}
+
+    header nav ul{display:flex;gap:18px;list-style:none}
+    header nav a{color:var(--accent);text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:600;opacity:0.95}
+    body.light-mode header nav a{color:var(--light-accent)}
+    header nav a.active, header nav a:hover{background:rgba(0,255,204,0.06);color:var(--accent-2);box-shadow:0 6px 20px rgba(0,255,153,0.06)}
+    body.light-mode header nav a.active, body.light-mode header nav a:hover{background:rgba(0,75,122,0.06);color:var(--light-accent-2)}
+
+    /* Theme toggle */
+    .controls{display:flex;gap:12px;align-items:center}
+    .btn{cursor:pointer; border:2px solid rgba(255,255,255,0.04); padding:8px 14px;border-radius:10px;color:var(--accent);background:transparent}
+    body.light-mode .btn{border:2px solid rgba(0,0,0,0.06);color:var(--light-accent)}
+
+    /* HERO */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:40px;align-items:center;padding-top:30px}
+    .intro{max-width:720px}
+    .eyebrow{color:var(--muted);font-weight:600;margin-bottom:12px}
+    h1{font-size:2.6rem;line-height:1.03;margin-bottom:12px;text-shadow:0 6px 30px rgba(0,255,204,0.04)}
+    body.light-mode h1{text-shadow:none}
+    h1 .name{color:var(--accent);text-shadow:0 0 18px rgba(0,255,204,0.12)}
+    p.lead{color:#cdefe3;margin-bottom:20px;font-size:1.05rem}
+    body.light-mode p.lead{color:var(--light-muted)}
+
+    .cta-row{display:flex;gap:12px;margin-top:14px}
+    .cta{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#001;padding:12px 18px;border-radius:999px;font-weight:700;text-decoration:none;box-shadow:0 12px 40px rgba(0,255,153,0.08);transition:transform .25s}
+    body.light-mode .cta{box-shadow:0 12px 30px rgba(0,75,122,0.06);color:#fff}
+    .cta:hover{transform:translateY(-4px)}
+
+    /* Profile card (lado direito) */
+    .card{
+      background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+      padding:22px;border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,0.6);position:relative;overflow:visible;border:1px solid rgba(255,255,255,0.03)
+    }
+    body.light-mode .card{background:var(--light-card);border:1px solid rgba(0,0,0,0.06);box-shadow:0 8px 20px rgba(0,0,0,0.06)}
+    .avatar{width:220px;height:220px;border-radius:50%;overflow:hidden;border:6px solid rgba(0,255,204,0.12);box-shadow:0 20px 50px rgba(0,255,153,0.04);margin:auto;display:block}
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .profile-name{text-align:center;margin-top:14px;font-weight:700;color:var(--accent)}
+    .profile-role{text-align:center;color:var(--muted);font-weight:600;margin-bottom:8px}
+
+    /* floating glow */
+    .glow-shape{position:absolute;right:-60px;top:-40px;width:180px;height:180px;border-radius:40px;background:radial-gradient(circle at 30% 30%, rgba(0,255,204,0.18), transparent 40%);filter:blur(30px);z-index:-1;transform:rotate(15deg)}
+
+    /* Skills */
+    .skills{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+    .skill{background:var(--card);padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);font-weight:600;color:var(--muted)}
+    body.light-mode .skill{background:transparent;color:var(--light-muted);border:1px solid rgba(0,0,0,0.06)}
+
+    /* Projects */
+    .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:28px}
+    .proj{background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);transition:transform .4s,box-shadow .4s}
+    .proj:hover{transform:translateY(-10px);box-shadow:0 18px 60px rgba(0,255,153,0.04)}
+    .proj .title{font-weight:700;color:var(--accent);margin-bottom:8px}
+    .proj p{color:var(--muted);font-size:.95rem}
+
+    /* Contact modal (hidden by default) */
+    .modal{position:fixed;inset:0;display:grid;place-items:center;background:rgba(0,0,0,0.6);opacity:0;pointer-events:none;transition:opacity .25s}
+    .modal.open{opacity:1;pointer-events:auto}
+    .modal-card{background:#06121a;padding:20px;border-radius:12px;max-width:720px;width:92%;border:1px solid rgba(0,255,204,0.06)}
+    body.light-mode .modal-card{background:#fff;border:1px solid rgba(0,0,0,0.06);color:var(--light-text)}
+    .form-row{display:flex;gap:8px}
+    input,textarea{width:100%;padding:12px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.06);color:#dffaf0}
+    body.light-mode input, body.light-mode textarea{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--light-text)}
+    .form-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:12px}
+
+    /* Footer */
+    footer{margin-top:60px;padding:26px;text-align:center;color:var(--muted);border-top:1px solid rgba(255,255,255,0.02)}
+    body.light-mode footer{color:var(--light-muted);border-top:1px solid rgba(0,0,0,0.06)}
+
+    /* Small screen */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr;gap:18px}
+      .card{order:-1}
+      .wrap{padding:90px 18px 40px}
+      header{padding:10px 16px}
+      h1{font-size:2rem}
+    }
+
+    /* Small niceties: reveal animation */
+    .reveal{opacity:0;transform:translateY(20px);transition:all .7s cubic-bezier(.2,.9,.2,1)}
+    .reveal.visible{opacity:1;transform:none}
+
+    /* Typing effect */
+    .typing{color:var(--accent);font-weight:700}
+
+    /* Responsive header: hamburger */
+    .nav-desktop{display:flex;gap:18px}
+    .hamburger{display:none;border:none;background:transparent;color:var(--accent);font-size:1.6rem;cursor:pointer}
+    @media (max-width:980px){
+      .nav-desktop{display:none}
+      .hamburger{display:block}
+    }
+
+    /* Side menu (mobile) */
+    .side-panel{position:fixed;top:0;right:-100%;width:300px;height:100vh;background:linear-gradient(180deg,rgba(0,0,0,0.9),rgba(0,0,0,0.85));backdrop-filter:blur(8px);z-index:10000;padding:80px 24px;transition:right .35s cubic-bezier(.2,.9,.2,1)}
+    .side-panel.open{right:0}
+    .side-panel a{display:block;color:var(--accent);padding:12px 8px;border-radius:8px;text-decoration:none;font-weight:600}
+    body.light-mode .side-panel{background:linear-gradient(180deg,rgba(255,255,255,0.95),rgba(255,255,255,0.9))}
+
+  </style>
+</head>
+<body>
+  <!-- Particle canvas (background subtle) -->
+  <canvas id="bg-canvas" style="position:fixed;inset:0;z-index:0;pointer-events:none"></canvas>
+
+  <header>
+    <div class="brand">
+      <div style="display:flex;flex-direction:column">
+        <div style="font-weight:700;color:var(--accent);font-size:14px">Luciano De Tarso Freitas Costa</div>
+        <small style="color:var(--muted);font-weight:600">Portfólio</small>
+      </div>
+    </div>
+
+    <nav class="nav-desktop">
+      <ul>
+        <li><a href="#inicio" class="nav-link">Início</a></li>
+        <li><a href="#sobre" class="nav-link">Sobre</a></li>
+        <li><a href="#projetos" class="nav-link">Projetos</a></li>
+        <li><a href="#contato" class="nav-link">Contato</a></li>
+      </ul>
+    </nav>
+
+    <div class="controls">
+      <button id="themeToggle" class="btn" title="Alternar tema">Tema</button>
+      <button id="openContact" class="btn">Contato</button>
+      <button class="hamburger" id="openMenu">☰</button>
+    </div>
+  </header>
+
+  <!-- Side panel mobile -->
+  <aside class="side-panel" id="sidePanel" aria-hidden="true">
+    <button id="closePanel" class="hamburger" style="position:absolute;top:18px;right:18px;color:var(--accent)">✖</button>
+    <nav style="margin-top:18px">
+      <a href="#inicio" class="nav-link">Início</a>
+      <a href="#sobre" class="nav-link">Sobre</a>
+      <a href="#projetos" class="nav-link">Projetos</a>
+      <a href="#contato" class="nav-link">Contato</a>
+    </nav>
+  </aside>
+
+  <main id="app">
+    <div class="wrap">
+      <!-- HERO -->
+      <section id="inicio" class="hero">
+        <div class="intro">
+          <div class="eyebrow reveal">Olá — Bem-vindo ao meu portfólio</div>
+          <h1 class="reveal">Eu sou <span class="name"> <span class="name-inner">Luciano De Tarso Freitas Costa</span></span></h1>
+          <p class="lead reveal">
+            Tenho 17 anos, sou de São Luís — MA e estou em constante evolução como desenvolvedor. Estudo mais de 4 horas por dia com foco e persistência, sempre buscando melhorar minhas habilidades e criar projetos com propósito e criatividade.
+          </p>
+
+          <div class="cta-row reveal">
+            <a class="cta" href="https://wa.me/5598981502071" target="_blank">Falar no WhatsApp</a>
+            <a class="btn" href="#projetos">Ver projetos</a>
+          </div>
+
+          <div class="skills reveal" style="margin-top:20px">
+            <div class="skill">HTML</div>
+            <div class="skill">CSS</div>
+            <div class="skill">JavaScript</div>
+            <div class="skill">Node.js</div>
+            <div class="skill">UI/UX</div>
+          </div>
+
+        </div>
+
+        <aside class="card reveal">
+          <div class="glow-shape"></div>
+          <div style="text-align:center">
+            <div class="avatar"><img src="33d63771-0498-4844-9213-de5fadb87152.jpg" alt="Foto de Luciano"></div>
+            <div class="profile-name">Luciano De Tarso</div>
+            <div class="profile-role">Desenvolvedor Front‑end & Criador</div>
+            <div style="display:flex;justify-content:center;gap:10px;margin-top:12px">
+              <a class="btn" href="https://instagram.com/lucianocosta.dev" target="_blank">Instagram</a>
+              <a class="btn" href="https://github.com/seuusuario" target="_blank">GitHub</a>
+            </div>
+            <div class="skills" style="margin-top:16px">
+              <div class="skill">React</div>
+              <div class="skill">Tailwind</div>
+              <div class="skill">Figma</div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- SOBRE -->
+      <section id="sobre" class="reveal">
+        <h2>Sobre Mim</h2>
+        <p style="max-width:900px;margin:16px auto 0;color:var(--muted)">Tenho 17 anos e sou de São Luís — MA. Sou apaixonado por tecnologia e desenvolvimento web. Estudo e pratico mais de 4 horas por dia com dedicação total, aprendendo e evoluindo a cada projeto. Acredito que <strong>foco</strong> e <strong>persistência</strong> são a chave para o sucesso, e quero construir uma carreira sólida criando interfaces modernas e experiências marcantes.<br></p>
+      </section>
+
+      <!-- PROJETOS -->
+      <section id="projetos" class="reveal">
+        <h2>Projetos</h2>
+        <div class="projects">
+          <article class="proj">
+            <div class="title">Landing Interativa</div>
+            <p>Landing page com animações, seções responsivas e micro-interações em JS puro.</p>
+          </article>
+          <article class="proj">
+            <div class="title">Dashboard Financeiro</div>
+            <p>Painel com gráficos, filtros e layout limpo para análise de dados.</p>
+          </article>
+          <article class="proj">
+            <div class="title">Bot WhatsApp</div>
+            <p>Integração com API e automações para atendimento.</p>
+          </article>
+        </div>
+      </section>
+
+
+      <!-- CONTATO (ponto de âncora / botão abre modal) -->
+      <section id="contato" class="reveal">
+        <h2>Contato</h2>
+        <p style="max-width:900px;margin:16px auto 8px;color:var(--muted)">Quer conversar? Clique em "Contato" no topo para enviar uma mensagem — ou me chame no WhatsApp.</p>
+        <div style="display:flex;justify-content:center;margin-top:12px">
+          <a class="cta" href="https://wa.me/5598981502071" target="_blank">Conversar</a>
+        </div>
+      </section>
+
+      <footer>
+        &copy; <span id="ano"></span> Luciano De Tarso Freitas Costa — Todos os direitos reservados.
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- MODAL -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-card reveal">
+      <h3>Enviar mensagem</h3>
+      <p style="color:var(--muted)">Ainda não há backend — essa é uma demo. Copie o texto gerado ou abra o WhatsApp.</p>
+      <div style="margin-top:12px">
+        <input id="nome" placeholder="Seu nome" />
+      </div>
+      <div style="margin-top:8px">
+        <input id="email" placeholder="Seu e-mail" />
+      </div>
+      <div style="margin-top:8px">
+        <textarea id="mensagem" rows="5" placeholder="Sua mensagem"></textarea>
+      </div>
+      <div class="form-actions">
+        <button id="closeModal" class="btn">Fechar</button>
+        <button id="send" class="cta">Gerar link WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SCRIPTS ====== -->
+  <script>
+    // --- Util: selecionar ---
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => document.querySelectorAll(s);
+
+    // Atualiza ano do rodapé
+    document.getElementById('ano').textContent = new Date().getFullYear();
+
+    // NAV: smooth scroll + active link
+    document.querySelectorAll('a.nav-link').forEach(a => {
+      a.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const id = a.getAttribute('href');
+        // close side panel if open (mobile)
+        document.getElementById('sidePanel')?.classList.remove('open');
+        document.querySelector(id).scrollIntoView({behavior:'smooth',block:'start'});
+      });
+    });
+
+    // Active link on scroll (simple)
+    const sections = Array.from(document.querySelectorAll('section'));
+    const navLinks = Array.from(document.querySelectorAll('a.nav-link'));
+    function onScrollActive(){
+      const y = window.scrollY + 140; // offset for fixed header
+      let current = sections.find(s => s.offsetTop <= y && (s.offsetTop + s.offsetHeight) > y);
+      if(!current) current = sections[0];
+      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#'+current.id));
+    }
+    window.addEventListener('scroll', onScrollActive);
+    onScrollActive();
+
+    // Reveal on scroll using IntersectionObserver
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('visible');
+        }
+      });
+    },{threshold:0.12});
+
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // Typing effect for role/name
+    (function typing(){
+      const el = document.querySelector('.name-inner');
+      if(!el) return;
+      const full = el.textContent.trim();
+      el.textContent = '';
+      let i=0;
+      const t = setInterval(()=>{
+        if(i>=full.length){clearInterval(t);return}
+        el.textContent += full[i++];
+      },26);
+    })();
+
+    // Theme toggle: apply light-mode class to body and adjust accessible colors
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    // restore preference from localStorage
+    if(localStorage.getItem('luciano_theme') === 'light') body.classList.add('light-mode');
+    themeToggle.addEventListener('click', ()=>{
+      const isLight = body.classList.toggle('light-mode');
+      localStorage.setItem('luciano_theme', isLight ? 'light' : 'dark');
+    });
+
+    // Modal handlers
+    const modal = $('#modal');
+    $('#openContact').addEventListener('click',()=>{ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); });
+    $('#closeModal').addEventListener('click',()=>{ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); });
+    modal.addEventListener('click',(e)=>{ if(e.target===modal){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }});
+
+    // Send button: opens WhatsApp link with message prefilled
+    $('#send').addEventListener('click',()=>{
+      const nome = $('#nome').value.trim()||'Contato';
+      const email = $('#email').value.trim()||'';
+      const msg = $('#mensagem').value.trim()||'Olá! Gostaria de falar com você.';
+      const text = `*${nome}*%0A${encodeURIComponent(msg)}%0A%0A${encodeURIComponent(email)}`;
+      const url = `https://wa.me/5598981502071?text=${text}`;
+      window.open(url,'_blank');
+    });
+
+    // Side panel (mobile)
+    const sidePanel = document.getElementById('sidePanel');
+    const openMenu = document.getElementById('openMenu');
+    const closePanel = document.getElementById('closePanel');
+    openMenu.addEventListener('click', ()=>{ sidePanel.classList.add('open'); sidePanel.setAttribute('aria-hidden','false'); });
+    closePanel.addEventListener('click', ()=>{ sidePanel.classList.remove('open'); sidePanel.setAttribute('aria-hidden','true'); });
+
+    // Simple particle background drawn in canvas (lightweight)
+    (function particleBackground(){
+      const c = document.getElementById('bg-canvas');
+      if(!c) return;
+      const ctx = c.getContext('2d');
+      let w=innerWidth,h=innerHeight; c.width=w;c.height=h;
+      const particles = [];
+      const count = Math.max(8, Math.floor((w*h)/90000)); // density
+      for(let i=0;i<count;i++) particles.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.8+0.4,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3});
+      function resize(){w=innerWidth;h=innerHeight;c.width=w;c.height=h}
+      addEventListener('resize',resize);
+      function frame(){ctx.clearRect(0,0,w,h);
+        for(const p of particles){
+          p.x += p.vx; p.y += p.vy;
+          if(p.x<0)p.x=w; if(p.x>w)p.x=0; if(p.y<0)p.y=h; if(p.y>h)p.y=0;
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(0,255,204,0.06)';
+          ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+        }
+        requestAnimationFrame(frame);
+      }
+      frame();
+    })();
+
+    // small perf improvement: pause animations when tab inactive
+    document.addEventListener('visibilitychange',()=>{
+      if(document.hidden){document.querySelectorAll('.reveal').forEach(r=>r.style.transition='none')} else {document.querySelectorAll('.reveal').forEach(r=>r.style.transition='all .7s cubic-bezier(.2,.9,.2,1)')}
+    });
+
+  </script>
+</body>
+</html>
